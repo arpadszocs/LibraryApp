@@ -14,22 +14,35 @@ namespace LibraryAppTest
         public void Setup()
         {
            service = new UserService();
-           List<UserDto> users = new List<UserDto>
-            {
-                new UserDto("Name", "Pwd"),
-                new UserDto("Name", "Pwd"),
-                new UserDto("Name", "Pwd")
-            };
-            //service.Save(users, new List<UserDto>(), new List<UserDto>());
+            
         }
-
 
 
         [TestMethod]
         public void TestLoad()
         {
-            List<UserDto> users = service.Load();
-            Assert.AreEqual(7, users.Count);
+            List<UserDto> users = new List<UserDto>
+            {
+                new UserDto("Name", "Pwd"),
+                new UserDto("Name", "Pwd"),
+                new UserDto("Name", "Pwd")
+            };
+            service.Save(users, new List<UserDto>(), new List<UserDto>());
+            users = service.Load();
+            try
+            { 
+                Assert.AreEqual(3, users.Count);
+            }
+            finally
+            {
+                service.Save(new List<UserDto>(), new List<UserDto>(),users);
+            }
+        }
+
+        [TestMethod]
+        public void TestUpdate()
+        {
+
         }
     }
 }

@@ -54,6 +54,7 @@ namespace LibraryApp
                 };
                 users.Add(user);
             }
+            reader.Close();
             return users;
         }
 
@@ -67,6 +68,7 @@ namespace LibraryApp
                 user.Id = reader.GetInt32(0);
                 user.Username = reader.GetString(1);
                 user.Password = reader.GetString(2);
+                reader.Close();
                 return user;
             }
             throw new EntityNotFoundException();
@@ -82,6 +84,7 @@ namespace LibraryApp
                 user.Id = reader.GetInt32(0);
                 user.Username = reader.GetString(1);
                 user.Password = reader.GetString(2);
+                reader.Close();
                 return user;
             }
             throw new EntityNotFoundException();
