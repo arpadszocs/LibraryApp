@@ -13,12 +13,12 @@ namespace LibraryApp
     {
 
         ConnectionManager connection = ConnectionManager.GetConnection();
-  
+
         public void Delete(long id)
         {
             String query = "DELETE FROM User WHERE id = " + id;
             connection.ExecuteQuery(query);
-           
+
         }
 
         public void Delete(User user)
@@ -28,12 +28,21 @@ namespace LibraryApp
 
         public void Insert(User user)
         {
-            String query = "INSERT INTO User(username,password) VALUES('"+ user.Username + "','" + user.Password + "')";
-            connection.ExecuteQuery(query);
+            try
+            {
+                User userInDB = SelectByUsername(user.Username);
+                throw new DuplicateUserException();
+            }
+            catch (EntityNotFoundException ex)
+            {
+                String query = "INSERT INTO User(username,password) VALUES('" + user.Username + "','" + user.Password + "')";
+                connection.ExecuteQuery(query);
+
+            }
         }
 
         public void InsertAll(List<User> users)
-        {  
+        {
             foreach (var user in users)
             {
                 Insert(user);
@@ -45,7 +54,8 @@ namespace LibraryApp
             List<User> users = new List<User>();
             String query = "SELECT * FROM User";
             MySqlDataReader reader = connection.ReadQuery(query);
-            while (reader.Read()){
+            while (reader.Read())
+            {
                 User user = new User
                 {
                     Id = reader.GetInt32(0),
@@ -60,17 +70,20 @@ namespace LibraryApp
 
         public User SelectByUsername(string username)
         {
-            String query = "SELECT * FROM User WHERE username = " + username;
+            String query = "SELECT * FROM User WHERE username = '" + username + "'";
             MySqlDataReader reader = connection.ReadQuery(query);
             if (reader.Read())
             {
-                User user = new User();
-                user.Id = reader.GetInt32(0);
-                user.Username = reader.GetString(1);
-                user.Password = reader.GetString(2);
+                User user = new User
+                {
+                    Id = reader.GetInt32(0),
+                    Username = reader.GetString(1),
+                    Password = reader.GetString(2)
+                };
                 reader.Close();
                 return user;
             }
+            reader.Close();
             throw new EntityNotFoundException();
         }
 

@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConnectionManager.cs" />
+    <Compile Include="DuplicateUserException.cs" />
     <Compile Include="EntityNotFoundException.cs" />
     <Compile Include="IDAO.cs" />
     <Compile Include="Entity.cs" />

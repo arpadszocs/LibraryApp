@@ -9,6 +9,21 @@ namespace LibraryApp
     public class UserService : IUserService
     {
         private IUserDAO userDAO = new UserDAO();
+        private static  IUserService service;
+
+        private UserService()
+        {
+
+        }
+
+        public static IUserService GetInstence()
+        {
+            if(service == null)
+            {
+                service = new UserService();
+            }
+            return service;
+        }
 
         public List<UserDto> Load()
         {
@@ -29,7 +44,6 @@ namespace LibraryApp
                 Password = userDto.Password
             };
             userDAO.Insert(user);
-           
         }
 
         public void Save(List<UserDto> created, List<UserDto> modified, List<UserDto> deleted)

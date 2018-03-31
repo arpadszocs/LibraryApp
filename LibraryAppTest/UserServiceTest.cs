@@ -8,12 +8,13 @@ namespace LibraryAppTest
     [TestClass]
     public class UserServiceTest
     {
+        /*
         IUserService service;
 
         [TestInitialize]
         public void Setup()
         {
-           service = new UserService();
+           
             
         }
 
@@ -44,5 +45,6 @@ namespace LibraryAppTest
         {
 
         }
+        */
     }
 }
